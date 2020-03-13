@@ -15,9 +15,17 @@ module.exports.createProduct = (req, res) => {
 module.exports.findOneProduct = (req, res) => {
     Product.findOne({_id: req.params.id})
         .then(product => res.json({ product: product }))
-        .catch(err => res.status(400).json({ message: "Something went worng", error: err}));
+        .catch(err => res.status(400).json({ message: "Something went wrong", error: err}));
 }
 
-// module.exports.destroyProduct = (req,res) => {
+module.exports.updateProduct = (req, res) => {
+    Product.findOneAndUpdate({_id: req.params.id}, req.body, {new:true})
+        .then(updatedProduct => res.json({ updatedProduct: updatedProduct }))
+        .catch(err => res.status(400).json({ message: "Something went wrong", error: err}));
+}
 
-// };
+module.exports.deleteProduct = (req,res) => {
+    Product.deleteOne({_id: req.params.id})
+        .then(confirmation => res.json({ deleteConfirmation: confirmation}))
+        .catch(err => res.status(400).json({ message: "Something went wrong", error: err}));
+};
