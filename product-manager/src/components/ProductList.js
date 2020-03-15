@@ -1,16 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 import { Link } from '@reach/router';
+import DeleteButton from './DeleteButton';
 
 const ProductList = props => {
-
-    const { removeFromDOM } = props;
-
-    const deleteHandler = (productID) => {
-        axios.delete("http://localhost:8000/api/product/"+productID+"/destroy")
-            .then(res => removeFromDOM(productID))
-            .catch(err => console.log(err));
-    }
 
     return (
         <div>
@@ -19,7 +11,7 @@ const ProductList = props => {
                 {props.products.map((product, i) => 
                     <li key={i}>
                         <Link to = {`/product/${product._id}`}>{product.prodName}</Link>
-                        <button onClick={e=>deleteHandler(product._id)}>Delete</button>    
+                        <DeleteButton productID={product._id} successCallback={() => props.removeFromDOM(product._id)} />    
                     </li>)}
             </ul>
         </div>

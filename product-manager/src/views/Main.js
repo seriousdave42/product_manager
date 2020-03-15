@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProdForm from '../components/ProdForm';
+import ProductForm from '../components/ProductForm';
 import ProductList from '../components/ProductList';
 
 const Main = () => {
@@ -17,6 +17,12 @@ const Main = () => {
             .catch(err => console.log(err));
     }, [])
 
+    const newProduct = product => {
+        axios.post("http://localhost:8000/api/product/create", product)
+            .then(res => setProducts([...products, res.data.product]))
+            .catch(err => console.log(err));
+    }
+
     const removeFromDOM = productID => {
         setProducts(products.filter(product => product._id !== productID));
     }
@@ -24,7 +30,11 @@ const Main = () => {
     return(
         <div>
             <h1>Product Manager</h1>
-            <ProdForm />
+            <ProductForm initialProduct={{
+                prodName: "",
+                prodPrice: 0,
+                prodDesc: ""
+            }} productHandler={newProduct} />
             <hr />
             {loaded && <ProductList products={products} removeFromDOM={removeFromDOM}/>}
         </div>
